@@ -1,1 +1,203 @@
+-- Step 1: Create the database
+CREATE DATABASE BloodBankDB;
+USE BloodBankDB;
+
+-- Step 2: Create tables for each entity
+
+-- Donor table
+CREATE TABLE Donor (
+    Donor_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender VARCHAR(10),
+    Address VARCHAR(255),
+    Blood_Group VARCHAR(10),
+    Diseases VARCHAR(255)
+);
+
+-- RegistrationTeam table
+CREATE TABLE RegistrationTeam (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+-- Patient table
+CREATE TABLE Patient (
+    P_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Gender VARCHAR(10),
+    Contact VARCHAR(50),
+    Blood_G VARCHAR(10),
+    Address VARCHAR(255),
+    Date_of_Intake DATE
+);
+
+-- Blood table
+CREATE TABLE Blood (
+    ID INT PRIMARY KEY,
+    Blood_Group VARCHAR(10)
+);
+
+-- BloodBank table
+CREATE TABLE BloodBank (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Location VARCHAR(255),
+    Contacts VARCHAR(50),
+    Quantity INT,
+    Available_Group VARCHAR(10)
+);
+
+-- Hospital table
+CREATE TABLE Hospital (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Location VARCHAR(255)
+);
+
+-- Manager table
+CREATE TABLE Manager (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+-- Step 3: Create tables for relationships
+
+-- Register relationship
+CREATE TABLE Register (
+    Donor_ID INT,
+    RegistrationTeam_ID INT,
+    PRIMARY KEY (Donor_ID, RegistrationTeam_ID),
+    FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID),
+    FOREIGN KEY (RegistrationTeam_ID) REFERENCES RegistrationTeam(ID)
+);
+
+-- Registers relationship
+CREATE TABLE Registers (
+    Patient_ID INT,
+    RegistrationTeam_ID INT,
+    PRIMARY KEY (Patient_ID, RegistrationTeam_ID),
+    FOREIGN KEY (Patient_ID) REFERENCES Patient(P_ID),
+    FOREIGN KEY (RegistrationTeam_ID) REFERENCES RegistrationTeam(ID)
+);
+
+-- Donates relationship
+CREATE TABLE Donates (
+    Donor_ID INT,
+    Blood_ID INT,
+    PRIMARY KEY (Donor_ID, Blood_ID),
+    FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID),
+    FOREIGN KEY (Blood_ID) REFERENCES Blood(ID)
+);
+
+-- Receives relationship
+CREATE TABLE Receives (
+    Patient_ID INT,
+    Blood_ID INT,
+    PRIMARY KEY (Patient_ID, Blood_ID),
+    FOREIGN KEY (Patient_ID) REFERENCES Patient(P_ID),
+    FOREIGN KEY (Blood_ID) REFERENCES Blood(ID)
+);
+
+-- StoredIn relationship
+CREATE TABLE StoredIn (
+    Blood_ID INT,
+    BloodBank_ID INT,
+    PRIMARY KEY (Blood_ID, BloodBank_ID),
+    FOREIGN KEY (Blood_ID) REFERENCES Blood(ID),
+    FOREIGN KEY (BloodBank_ID) REFERENCES BloodBank(ID)
+);
+
+-- Manages relationship
+CREATE TABLE Manages (
+    Manager_ID INT,
+    BloodBank_ID INT,
+    PRIMARY KEY (Manager_ID, BloodBank_ID),
+    FOREIGN KEY (Manager_ID) REFERENCES Manager(ID),
+    FOREIGN KEY (BloodBank_ID) REFERENCES BloodBank(ID)
+);
+
+-- Contacts relationship
+CREATE TABLE Contacts (
+    BloodBank_ID INT,
+    Hospital_ID INT,
+    PRIMARY KEY (BloodBank_ID, Hospital_ID),
+    FOREIGN KEY (BloodBank_ID) REFERENCES BloodBank(ID),
+    FOREIGN KEY (Hospital_ID) REFERENCES Hospital(ID)
+);
+
+-- Step 4: Insert sample data
+
+example:- 
+-- Insert sample data into Donor table
+INSERT INTO Donor (Donor_ID, Name, Age, Gender, Address, Blood_Group, Diseases) VALUES
+(1, 'John Doe', 30, 'Male', '123 Main St, City', 'O+', NULL),
+(2, 'Jane Smith', 25, 'Female', '456 Elm St, Town', 'A-', NULL),
+(3, 'Alice Johnson', 40, 'Female', '789 Oak St, Village', 'B+', NULL);
+
+-- Insert sample data into RegistrationTeam table
+INSERT INTO RegistrationTeam (ID, Name) VALUES
+(1, 'Team A'),
+(2, 'Team B');
+
+-- Insert sample data into Patient table
+INSERT INTO Patient (P_ID, Name, Gender, Contact, Blood_G, Address, Date_of_Intake) VALUES
+(1, 'Michael Brown', 'Male', '123-456-7890', 'AB+', '456 Maple St, City', '2024-06-01'),
+(2, 'Emily Davis', 'Female', '987-654-3210', 'O-', '789 Pine St, Town', '2024-06-03');
+
+-- Insert sample data into Blood table
+INSERT INTO Blood (ID, Blood_Group) VALUES
+(1, 'O+'),
+(2, 'A-'),
+(3, 'B+');
+
+-- Insert sample data into BloodBank table
+INSERT INTO BloodBank (ID, Name, Location, Contacts, Quantity, Available_Group) VALUES
+(1, 'City Blood Bank', '123 Central Ave, City', '555-1234', 100, 'O+'),
+(2, 'Town Blood Bank', '456 West St, Town', '555-5678', 50, 'A-');
+
+-- Insert sample data into Hospital table
+INSERT INTO Hospital (ID, Name, Location) VALUES
+(1, 'City Hospital', '789 East St, City'),
+(2, 'Town Hospital', '123 North St, Town');
+
+-- Insert sample data into Manager table
+INSERT INTO Manager (ID, Name) VALUES
+(1, 'Michael Smith'),
+(2, 'Emily Johnson');
+
+-- Insert sample data into Register table
+INSERT INTO Register (Donor_ID, RegistrationTeam_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into Registers table
+INSERT INTO Registers (Patient_ID, RegistrationTeam_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into Donates table
+INSERT INTO Donates (Donor_ID, Blood_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into Receives table
+INSERT INTO Receives (Patient_ID, Blood_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into StoredIn table
+INSERT INTO StoredIn (Blood_ID, BloodBank_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into Manages table
+INSERT INTO Manages (Manager_ID, BloodBank_ID) VALUES
+(1, 1),
+(2, 2);
+
+-- Insert sample data into Contacts table
+INSERT INTO Contacts (BloodBank_ID, Hospital_ID) VALUES
+(1, 1),
+(2, 2);
 
